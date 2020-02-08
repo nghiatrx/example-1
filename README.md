@@ -15,7 +15,11 @@ or
 
     yarn test
 
+End-to-end testing
 
+    yarn test:e2e
+
+    
 ### How to run
 
     yarn start:dev
