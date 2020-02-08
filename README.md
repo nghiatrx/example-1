@@ -2,7 +2,7 @@
   
     cd server
 
-## Installation
+### Installation
 
     yarn
 
@@ -11,21 +11,21 @@ or
     npm install
 
 
-## Run unit tests
+### Run unit tests
 
     yarn test
 
 
-## How to run
+### How to run
 
     yarn start:dev
 
 
 # Web
 
-    cd server
+    cd web
 
-## Installation
+### Installation
 
     yarn
 
@@ -33,11 +33,11 @@ or
 
     npm install
 
-## Run unit tests
+### Run unit tests
 
     yarn test
 
 
-## How to run
+### How to run
 
     yarn start
