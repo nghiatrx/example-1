@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Field, reduxForm } from 'redux-form';
 import { Row, Col } from 'antd';
@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { District } from '../../../store/districts/district.interface';
 import { City } from '../../../store/cities/city.interface';
 import { Store } from '../../../store/storeinfo/storeinfo.interface';
-import { saveStore } from '../../../store/actions';
+import { saveStore, getDistrictsFromApi } from '../../../store/actions';
 
 const isValidPhone = (phone: string): boolean => {
   // length must be from 9 to 11
@@ -41,9 +41,30 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
   const { t } = useTranslation();
 
   const submit = (values: Store) => {
-    console.log('111', values)
     props.dispatch(saveStore(values));
   }
+
+  const getDistrictApi = (cityId: string) => {
+    props.dispatch(getDistrictsFromApi(cityId))
+  }
+
+  useEffect(() => {
+    if (props.formValuesInitial.city !== props.formValues.city) {
+      props.change('district', ''); // when change city, set emply for district
+    }
+    if (props.formValues.city && !props.districts[props.formValues.city]) {
+      getDistrictApi(props.formValues.city)
+    }
+  }, [props.formValues.city]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (props.formValuesInitial.redInvoice?.city !== props.formValues.redInvoice?.city) {
+      props.change('redInvoice.district', ''); // when change city, set emply for district
+    }
+    if (props.formValues.redInvoice?.city && !props.districts[props.formValues.redInvoice?.city]) {
+      getDistrictApi(props.formValues.redInvoice?.city)
+    }
+  }, [props.formValues.redInvoice?.city]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
@@ -51,7 +72,7 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
         <Row gutter={[16, 16]}>
           <Col md={24}><b>{t('BASIC INFO')}.</b></Col>
           <Col md={24}>
-            <div>
+            <div className='storeName'>
               <label>{t('Store Name')}</label>
               <div>
                 <Field
@@ -64,7 +85,7 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
           </Col>
 
           <Col md={12}>
-            <div>
+            <div className='storeAddress'>
               <label>{t('Store Address')}</label>
               <div>
                 <Field
@@ -76,24 +97,24 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
             </div>
           </Col>
           <Col md={6}>
-            <div>
+            <div className='district'>
               <label>{t('District')}</label>
               <div>
-                <Field name="district" component={Select} options={props.districts} />
+                <Field name="district" component={Select} options={props.districts[props.formValues.city || ''] || []} />
               </div>
             </div>
           </Col>
           <Col md={6}>
-            <div>
+            <div className='city'>
               <label>{t('City')}</label>
               <div>
-                <Field name="city" component={Select} options={props.cities} />
+                <Field name="city" component={Select} options={props.cities || []} />
               </div>
             </div>
           </Col>
 
           <Col md={24}>
-            <div>
+            <div className='phone'>
               <label>{t('Phone')}#</label>
               <div>
                 <Field
@@ -138,7 +159,7 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
             <div>
               <label>{t('District')}</label>
               <div>
-                <Field name="redInvoice.district" component={Select} options={props.districts} />
+                <Field name="redInvoice.district" component={Select} options={props.districts[props.formValues.redInvoice?.city || ''] || []} />
               </div>
             </div>
           </Col>
@@ -146,7 +167,7 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
             <div>
               <label>{t('City')}</label>
               <div>
-                <Field name="redInvoice.city" component={Select} options={props.cities} />
+                <Field name="redInvoice.city" component={Select} options={props.cities || []} />
               </div>
             </div>
           </Col>
@@ -171,10 +192,7 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
           <Col md={24}>
             <button onClick={() => props.onClose()} style={{ width: '100%' }} type='button' className='btn default'>{t('Cancel')}</button>
           </Col>
-
         </Row>
-
-
       </form>
     </div>
   )
@@ -182,8 +200,11 @@ let BasicInfo: any = React.memo((props: BasicInfoProps) => {
 
 export interface BasicInfoProps {
   dispatch: Function, // connect redux
-  districts: District[],
+  districts: { [key: string]: District[] },
   cities: City[],
+  formValues: Store,
+  formValuesInitial: Store,
+  change: Function, // prop from reduxForm
   onClose: Function,
   handleSubmit: Function, // from reduxForm
   submitting: boolean // from reduxForm
@@ -197,6 +218,8 @@ BasicInfo = reduxForm({
 BasicInfo = connect(
   (state: any) => ({
     initialValues: state.storeinfo,
+    formValues: state.form.store ? state.form.store.values : {},
+    formValuesInitial: state.form.store ? state.form.store.initial : {},
     districts: state.districts,
     cities: state.cities
   })

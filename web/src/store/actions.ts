@@ -28,12 +28,12 @@ export function saveStore(store: Store): IAction {
   return { type: SAVE_STORE, payload: store }
 }
 
-export function getDistrictsFromApi(): IAction {
-  return { type: GET_DISTRICTS_FROM_API, payload: null }
+export function getDistrictsFromApi(cityId: string): IAction {
+  return { type: GET_DISTRICTS_FROM_API, payload: { cityId } }
 }
 
-export function setDistricts(districts: District[]) {
-  return { type: SET_DISTRICTS, payload: districts }
+export function setDistricts(cityId: string, districts: District[]) {
+  return { type: SET_DISTRICTS, payload: { cityId, districts } }
 }
 
 export function getCitiesFromApi(): IAction {

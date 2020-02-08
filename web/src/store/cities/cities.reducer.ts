@@ -8,7 +8,9 @@ const initialState: City[] = []
 export default function (state: City[] = initialState, action: IAction) {
   switch(action.type) {
     case SET_CITIES:
-      return [ ...action.payload ]
+      if (action && Array.isArray(action.payload)) {
+        return [ ...action.payload ]
+      }
   }
   return state
 }

@@ -1,4 +1,5 @@
 export interface District {
   id: string;
-  text: string
+  text: string;
+  cityId: string;
 }

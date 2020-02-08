@@ -11,11 +11,7 @@ export class CitiesService {
     {
       id: 'Ha noi',
       text: 'Ha noi'
-    },
-    {
-      id: 'Da nang',
-      text: 'Da nang'
-    },
+    }
   ];
 
   getAll() {

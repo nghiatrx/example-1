@@ -8,7 +8,7 @@ i18n
   // pass the i18n instance to react-i18next.
   .use(initReactI18next)
   .init({
-    fallbackLng: process.env.REACT_APP_LANG,
+    fallbackLng: process.env.REACT_APP_LANG || 'en',
     debug: false,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

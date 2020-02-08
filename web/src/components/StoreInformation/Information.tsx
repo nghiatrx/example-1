@@ -11,7 +11,7 @@ const Information = React.memo((props: InformationProps) => {
 
   useEffect(() => {
     props.dispatch(getStoreFromApi('id1'))
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Card title="Card title">

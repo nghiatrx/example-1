@@ -5,7 +5,7 @@ const { Option } = AntSelect;
 const Select = (props: SelectProps) => (
   <AntSelect value={props.input.value} onChange={(value: string) => props.input.onChange(value)}>
     {
-      props.options.map(item => (
+      Array.isArray(props.options) && props.options.map(item => (
         <Option key={item.id} value={item.id}>{item.text}</Option>
       ))
     }

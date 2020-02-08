@@ -9,17 +9,13 @@ const openNotification = (data: INotification) => {
     case 'success':
       notification.open({
         message: data.text,
-        onClick: () => {
-          console.log('Notification Clicked!');
-        },
+        onClick: () => {},
       });
       break;
     case 'error':
       notification.error({
         message: data.text,
-        onClick: () => {
-          console.log('Notification Clicked!');
-        },
+        onClick: () => {},
       });
       break;
     default: break;

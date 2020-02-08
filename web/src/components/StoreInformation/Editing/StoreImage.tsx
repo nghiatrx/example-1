@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { Store } from '../../../store/storeinfo/storeinfo.interface';
 import axios from 'axios';
 import { reduxForm } from 'redux-form';
 
@@ -23,8 +22,9 @@ let StoreImage: any = React.memo((props: StoreImage) => {
     } catch (e) { }
   }
 
-  const handleRemove = () => {
-    props.change('logoUrl', '');
+  const handleRemove = (e) => {
+    e.preventDefault()
+    props.change('logoUrl', '')
   }
 
   return (
@@ -32,7 +32,7 @@ let StoreImage: any = React.memo((props: StoreImage) => {
       <b>{t('STORE IMAGE')}</b>
       <div className='image' style={{ backgroundImage: `url(${props.logoUrl ? `${process.env.REACT_APP_API_URL}/public/${props.logoUrl}` : `default.png`})` }}></div>
       <div className='btnGroup'>
-        <a className='remove' href='#' onClick={handleRemove}>{t('Remove')}</a>
+        <a className='remove' href="#remove" onClick={handleRemove}>{t('Remove')}</a>
         <span className='fileBtn'>
           <input className='file' type='file' onChange={handleUploadImg} />
           <button className='btn default'>{t('Upload Image')}</button>

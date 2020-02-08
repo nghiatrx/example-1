@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should match to snapshot 1`] = `
+<div>
+  <input
+    className="ant-input"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    type="text"
+    value="test"
+  />
+</div>
+`;

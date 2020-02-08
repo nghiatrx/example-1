@@ -11,15 +11,14 @@ const TextField = (props: TextField) => {
       <AntInput
         value={input.value}
         onChange={e => input.onChange(e.target.value)} />
-
-      {((error && <span style={{ color: '#ff0000' }}>{t(`${error}`)}</span>) || (warning && <span color='#d4ff00'>{t(`${warning}`)}}</span>))}
+      {((error && <span className='error' style={{ color: '#ff0000' }}>{t(`${error}`)}</span>) || (warning && <span className='warning' color='#d4ff00'>{t(`${warning}`)}}</span>))}
 
     </div>
   )
 
 }
 
-export interface TextField {
+export interface TextField extends HTMLInputElement {
   input: any,
   meta: { error: any, warning: any } // from reduxForm
 }
