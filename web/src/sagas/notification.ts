@@ -1,5 +1,5 @@
-import { SHOW_NOTIFICATION } from '../store/actions';
-import { takeEvery } from 'redux-saga/effects';
+import { SHOW_NOTIFICATION, showNotification } from '../store/actions';
+import { takeEvery, put } from 'redux-saga/effects';
 
 import { notification } from 'antd';
 import IAction from '../store/action.interface';
@@ -31,4 +31,14 @@ export function* watchNotification() {
 export interface INotification {
   text: string;
   type: 'error' | 'success';
+}
+
+export function* showNotiFormErrorResponse(e: any) {
+  let text = 'Server Error';
+  if (e.response && e.response.data && e.response.data.message) text = e.response.data.message;
+  yield put(showNotification({ text, type: 'error' }));
+}
+
+export function* showNotiFromText(text: string) {
+  yield put(showNotification({ text, type: 'success' }));
 }

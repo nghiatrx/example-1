@@ -29,11 +29,11 @@ export class StoresController {
     if (updateStoreDto.city) {
       const city = this.citiesService.getAll().find(city => city.id === updateStoreDto.city);
       if (!city) {
-        throw new BadRequestException();
+        throw new BadRequestException('City is invalid');
       } else {
         const districts = this.districtsService.getByCityId(city.id);
         if (!districts.find(district => district.id === updateStoreDto.district)) {
-          throw new BadRequestException();
+          throw new BadRequestException('District is invalid');
         }
       }
     }
@@ -41,12 +41,20 @@ export class StoresController {
     if (updateStoreDto.redInvoice?.city) {
       const city = this.citiesService.getAll().find(city => city.id === updateStoreDto.redInvoice.city);
       if (!city) {
-        throw new BadRequestException();
+        throw new BadRequestException(`City's RedInvoice is invalid`);
       } else {
         const districts = this.districtsService.getByCityId(city.id);
         if (!districts.find(district => district.id === updateStoreDto.redInvoice.district)) {
-          throw new BadRequestException();
+          throw new BadRequestException(`City's RedInvoice is invalid`);
         }
+      }
+    }
+
+    // check phone number
+    if (updateStoreDto.phone) {
+      const regex = /^([0-9]){9,11}$/;
+      if (updateStoreDto.phone.match(regex) === null) {
+        throw new BadRequestException(`Phone is invalid`);
       }
     }
 
